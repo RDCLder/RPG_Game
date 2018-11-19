@@ -22,12 +22,15 @@ class Character:
     def attack(self, target):
         damage = randint(0, self.power)
         target.health -= damage
-        print(f"{self.name} does {damage} damage to the {target.name}.")
+        print(f"{self.name} does {damage} damage to {target.name}.")
         if target.name == "Zombie":
             pass
+        elif target.name == yourName:
+            if target.health <= 0:
+                print(f"{yourName} is dead!  You lose!")
         else:
             if target.health <= 0:
-                print(f"{target.name} is dead.")
+                print(f"{target.name} is dead. You win!")
 
     def alive(self):
         if self.name == "Zombie":
@@ -60,7 +63,7 @@ def main():
     while enemy.alive() and adventurer.alive():
         adventurer.status()
         enemy.status()
-        print("\nWhat do you want to do?")
+        print("\nChoose an action:")
         print(f"1. Fight {enemy.name}")
         print("2. Pass")
         print("3. Flee")
