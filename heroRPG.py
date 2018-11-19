@@ -22,21 +22,27 @@ class Character:
     def attack(self, target):
         damage = randint(0, self.power)
         target.health -= damage
-        print(f"The {self.name} does {damage} damage to the {target.name}.")
-        if target.health <= 0:
-            print(f"The {target.name} is dead.")
+        print(f"{self.name} does {damage} damage to the {target.name}.")
+        if target.name == "Zombie":
+            pass
+        else:
+            if target.health <= 0:
+                print(f"{target.name} is dead.")
 
     def alive(self):
-        if self.health > 0:
+        if self.name == "Zombie":
             return True
+        else:
+            if self.health > 0:
+                return True
     
     def status(self):
-        print(f"The {self.name} has {self.health} health and {self.power} power.")
+        print(f"{self.name} has {self.health} health and {self.power} power.")
 
 
 goblin = Character("Goblin", 10, 2)
-zombie = Character("Zombie", 9000, 1)
-dragon = Character("Dragon", 1000000, 100)
+zombie = Character("Zombie", 10, 1)
+dragon = Character("Dragon", 1000, 100)
 enemies = [zombie, goblin, dragon]
 
 #-------------------------------------------------------------------------------------#
@@ -55,9 +61,9 @@ def main():
         adventurer.status()
         enemy.status()
         print("\nWhat do you want to do?")
-        print(f"1. fight {enemy.name}")
-        print("2. do nothing")
-        print("3. flee")
+        print(f"1. Fight {enemy.name}")
+        print("2. Pass")
+        print("3. Flee")
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
@@ -65,12 +71,12 @@ def main():
         elif raw_input == "2":
             pass
         elif raw_input == "3":
-            print("Goodbye.")
+            print("You fled to fight another day.")
             break
         else:
             print(f"Invalid input {raw_input}")
 
-        if enemy.health > 0:
+        if enemy.alive():
             enemy.attack(adventurer)
 
 main()
