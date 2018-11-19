@@ -60,9 +60,14 @@ class Hero:
             print("The goblin is dead.")
 
 
-
 class Goblin:
 
     def __init__(self, goblin_health, goblin_power):
         self.goblin_health = goblin_health
         self.goblin_power = goblin_power
+    
+    def attack(self, hero):
+        hero.hero_health -= self.goblin_power
+        print(f"The goblin does {self.goblin_power} damage to you.")
+        if hero.hero_health <= 0:
+            print("You are dead.")
