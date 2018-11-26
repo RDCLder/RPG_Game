@@ -4,11 +4,67 @@
 
 # Initialize
 
-from random import randint
-from random import choice
+# from random import randint
+# from random import choice
 from rpgCharacter import *
 
-adventurer = Character("Hero", "warrior", "player", 1, 1, 1, 1)
+#-------------------------------------------------------------------------------------#
+
+# Character creation
+
+input("\nNote:  When text is followed by '...' Press ENTER to continue...")
+
+yourName = input("\nWhat is your name, adventurer?\n")
+print(f"\nWelcome, {yourName}, what is your class?\n" + "-" * 20)
+print("1. Warrior: Gifted with overwhelming strength and steadfast endurance.")
+print("2. Assassin: Gifted with blinding speed and deadly skill.")
+print("3. Mage: Gifted with arcane knowledge and mystical powers.")
+print("-" * 20)
+chooseClass = 0
+
+while chooseClass == 0:
+    yourClass = input("Choose an option (1-3): ")
+    if yourClass not in ("1", "2", "3"):
+        print("Please select a valid selection")
+    else:
+        if yourClass == "1":
+            adventurer = Character(yourName, "warrior", "player", 5, 5, 3, 3)
+        elif yourClass == "2":
+            adventurer = Character(yourName, "assassin", "player", 2, 3, 6, 4)
+        else:
+            adventurer = Character(yourName, "mage", "player", 1, 2, 3, 8)
+        
+        chooseClass = 1
+
+print(f"\nAh, a {adventurer.rpgClass}.  I should have guessed by ", end = "")
+if adventurer.rpgClass == "warrior":
+    print("that intimidating sword on your back...")
+elif adventurer.rpgClass == "assassin":
+    print("those sharp daggers you have sheathed...")
+else:
+    print("that strange staff you're holding...")
+input()
+print("Not many travelers venture here to the town of Dunwich...")
+input()
+print("There have been all manners of savage beasts and ungodly creatures...")
+input()
+print("That've started plaguing the surrounding areas...")
+input()
+print("Only daring adventurers seeking glory or treasures traverse these lands...")
+input()
+print("Though some would use another word to describe them...")
+input()
+print("Pay them no mind.  Many here welcome any who come to rid us of the surrounding blight...")
+input()
+print("The local Adventurer's Guild has a list of quests if you seek to be rewarded for your efforts...")
+input()
+print("The local stores can help replenish your stock or provide new wares...")
+input()
+print("Among a few other places of interest...")
+input()
+print("But enough of my rambling.  I'll let you explore for yourself...")
+input()
+print("Town of Dunwich")
 
 #-------------------------------------------------------------------------------------#
 
@@ -40,90 +96,98 @@ worldMap = {
 
 #-------------------------------------------------------------------------------------#
 
-# Generate Enemies
-
-goblin1 = Character("Goblin", "goblin", "common", 1, 1, 2, 1)
-bandit1 = Character("Bandit", "bandit", "common", 2, 2, 3, 2)
-wolf1 = Character("Wolf", "wolf", "common", 2, 1, 4, 1)
-zombie1 = Character("Zombie", "zombie", "uncommon", 1, 1, 0, 10),
-troll1 = Character("Troll", "troll", "rare", 8, 8, 2, 1)
-shadow1 = Character("Shadow Elemental", "shadow", "uncommon", 4, 0.1, 4, 10)
-greaterShadow1 = Character("Greater Shadow Elemental", "greaterShadow", "rare", 8, 2, 5, 20)
-deathShadow1 = Character("Shadow of Death", "deathShadow", "mythic", 15, 5, 6, 30)
-vampire1 = Character("Vampire Fledgling", "babyVampire", "uncommon", 3, 3, 3, 2)
-vampire2 = Character("Adult Vampire", "adultVampire", "rare", 5, 5, 5, 5)
-vampire3 = Character("Elder Vampire", "elderVampire", "mythic", 10, 20, 8, 10)
-dragon = Character("Dragon", "dragon", "unique", 50, 100, 15, 100)
-
-enemies = {
-    "common": (goblin1, bandit1, wolf1),
-    "uncommon": (zombie1, shadow1, vampire1),
-    "rare": (troll1, greaterShadow1, vampire2),
-    "mythic": (vampire3, deathShadow1),
-    "unique": (dragon)
-}
-
-# In the future, enemies will become location dependent.
-# e.g. dragon will only appear in Dragon's Den, zombie will only appear in Graveyard, etc.
-
-#-------------------------------------------------------------------------------------#
-
 # Gameplay definitions.
 
 def idle(location):
 
     while True:
         
-        print("Actions:\n" + "-" * 20)
-        print("1. Travel")
-        print("2. Explore")
-        print("3. Rest")
-        print("4. Quit")
-        print("-" * 20, end = "")
-        raw_input = input("Choose an action (1-4): ")
+        print("\nActions:\n" + "-" * 20)
+        print("1. Travel to a new area")
+        print("2. Explore the area")
+        print("3. Rest for the day")
+        print("4. Check status")
+        print("5. Quit")
+        print("-" * 20)
+        raw_input = input("Choose an action (1-5): ")
 
         if raw_input == "1":
             travel(location)
         elif raw_input == "2":
             explore(location)
         elif raw_input == "3":
-            rest(location)
+            if location == "Steppe of Sheol":
+                print(f"\nThis area is cursed. {adventurer.name} cannot rest here.")
+            else:
+                rest()
         elif raw_input == "4":
-            print("Thank you for playing.")
+            print()
+            adventurer.status()
+        elif raw_input == "5":
+            print("\nThank you for playing.")
             break
         else:
-            print("Please make a valid choice.")
+            print("\nPlease select a valid choice.")
 
 def travel(location):
+   
     directions = [loc[1] for loc in worldMap[location]]
     
     while True:
     
-        print("You can travel:\n" + "-" * 20)
+        print("\nYou can travel:\n" + "-" * 20)
         for i in range(len(worldMap[location])):
             print(f"{i + 1}. {directions[i]}")
+        back = len(directions) + 1
+        print(f"{back}. Return")
         print("-" * 20)
         directionsIndex = input(f"Choose a direction (1-{len(directions)}): ")
 
         if directionsIndex not in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "special"]:
             print("\nPlease select a valid choice.")
-        elif int(directionsIndex) < 1 or int(directionsIndex) > len(directions):
+        elif int(directionsIndex) < 1 or int(directionsIndex) > back:
             print("\nPlease select a valid choice.")
         else:
             if directionsIndex == "special":
                 print("Work in progress.")
+                play = 0
+            elif directionsIndex == str(back):
+                play = 0
             else:
                 goDirection = worldMap[location][int(directionsIndex) - 1]
+                play = 1
             break
 
-    leaveEncounter = randint(0, 1)
+    if play == 1:
 
-    if leaveEncounter == 0:
-        print(f"{adventurer.name} is now in {goDirection[0]}.")
-        idle(goDirection[0])
-    else:
-        encounter(1, location)
-        idle(goDirection[0])
+        leaveEncounter = randint(0, 1)
+
+        if leaveEncounter == 0:
+            if goDirection[0] == "Steppe of Sheol":
+                print(f"\nAfter stepping through the portal, you feel a wave of dread sweep over your body...")
+                input()
+                print("The sky shifts through an unnatural palette of colors...")
+                input()
+                print("The air grows thick with the smell of sulfur and brimestone...")
+                input()
+                print("The very ground begins transforming into strange shapes that seem to defy possibility...")
+                input()
+                print("Before you can turn back, the portal collapses, leaving you trapped here...")
+                input()
+                print("Everything is beyond your comprehension, save for one fact...")
+                input()
+                print("This realm is not meant for humans to tread...")
+                input()
+                print("You must leave.")
+            
+            print(f"\n{goDirection[0]}")
+            idle(goDirection[0])
+
+        else:
+            if location != "Town":
+                encounter(1, location, "normal")
+            print(f"\n{goDirection[0]}")
+            idle(goDirection[0])
 
 def townLocations(location):
 
@@ -163,7 +227,7 @@ def explore(location):
     if location == "Town":
         while True:
 
-            print("Places of interest:\n" + "-" * 20)
+            print("\nPlaces of interest:\n" + "-" * 20)
             print("1. Adventurer's Guild")
             print("2. Blacksmith's Forge")
             print("3. Alchemist's Apothecary")
@@ -191,17 +255,54 @@ def explore(location):
                 break
 
     else:
-        exploreEncounter = randint(1, 10)
+        exploreEncounter = randint(1, 100)
+        if 1 <= exploreEncounter <= 90:
+            encounter(1, location, "normal")
+        else:
+            addGold = randint(2, 10)
+            addSmallPotion = randint(1, 5) // 5
+            addFireBomb = randint(1, 5) // 5
 
-        if exploreEncounter == 1:
-            print()
+            if 96 <= exploreEncounter <= 100:
+                if location in ["Graveyard", "Ancient Forest", "Ancient Ruins", 
+                    "Steppe of Sheol", "Dragon's Den"]:
+                    encounter(1, location, "boss")
 
-def rest(location):
-    print()
+                else:
+                    if addGold >= 1:
+                        adventurer.items["Gold"] += addGold
+                        print(f"{adventurer.name} obtained {addGold} gold!")
+                    if addSmallPotion >= 1:
+                        adventurer.items["Use"]["Small Health Potion"][0] += addSmallPotion
+                        print(f"{adventurer.name} obtained {addSmallPotion} small potion!")
+                    if addFireBomb >= 1:
+                        adventurer.items["Use"]["Fire Bomb"][0] += addFireBomb
+                        print(f"{adventurer.name} obtained {addFireBomb} fire bomb!")
+            else:
+                if addGold >= 1:
+                    adventurer.items["Gold"] += addGold
+                    print(f"{adventurer.name} obtained {addGold} gold!")
+                if addSmallPotion >= 1:
+                    adventurer.items["Use"]["Small Health Potion"][0] += addSmallPotion
+                    print(f"{adventurer.name} obtained {addSmallPotion} small potion!")
+                if addFireBomb >= 1:
+                    adventurer.items["Use"]["Fire Bomb"][0] += addFireBomb
+                    print(f"{adventurer.name} obtained {addFireBomb} fire bomb!")
 
-def encounter(play, location):
+def rest():
     
-    while play == 1:
+    if adventurer.rpgClass == "warrior":
+        adventurer.energy = adventurer.strength * 10
+    elif adventurer.rpgClass == "assassin":
+        adventurer.energy = adventurer.agility * 10
+    elif adventurer.rpgClass == "mage":
+        adventurer.energy = adventurer.mentality * 10
+    adventurer.health = (adventurer.endurance + adventurer.items["Armor"][1]) * 10
+    print(f"\nAfter a good rest, {adventurer.name} feels refreshed.")
+
+def encounter(play, location, enemyType):
+
+    if enemyType == "normal":
         chooseEnemy = randint(1, 100)
         if 1 <= chooseEnemy <= 50:
             enemy = choice(enemies["common"])
@@ -211,65 +312,62 @@ def encounter(play, location):
             enemy = choice(enemies["rare"])
         else:
             enemy = choice(enemies["mythic"])
-
+        print(enemy)
         print(f"\n{adventurer.name} encounters a wild {enemy.name}!")
 
-        while enemy.alive() and adventurer.alive():
-            adventurer.status()
-            enemy.status()
-            print("\nActions:\n" + "-" * 20)
-            print(f"1. Attack {enemy.name}")
-            print("2. Defend")
-            if adventurer.rpgClass == "mage":
-                print("3. Use Item/Magic")
-            else:
-                print("3. Use Item")
-            print("4. Flee")
-            print("5. Quit")
-            print("-" * 20)
-            print("Choose an action (1-5): ", end="")
-            raw_input = input()
-            
-            if raw_input == "1":
-                adventurer.attack(enemy)
-                if enemy.alive():
-                    enemy.attack(adventurer)
-                else:
-                    adventurer.loot(enemy)
+    elif enemyType == "boss":
+        print()
+        enemy = bossEnemies[location]
 
-            elif raw_input == "2":
-                defenseCheck = adventurer.defend(enemy)
-                if enemy.alive():
-                    enemy.attack(adventurer, defenseCheck)
-
-            elif raw_input == "3":
-                adventurer.use(enemy)
-                if enemy.alive():
-                    enemy.attack(adventurer)
-                else:
-                    adventurer.loot(enemy)
-
-            elif raw_input == "4":
+    while enemy.alive() and adventurer.alive():
+        adventurer.status()
+        enemy.status()
+        print("\nActions:\n" + "-" * 20)
+        print(f"1. Attack {enemy.name}")
+        print("2. Defend")
+        if adventurer.rpgClass == "mage":
+            print("3. Use Item/Magic")
+        else:
+            print("3. Use Item")
+        print("4. Flee")
+        print("5. Quit")
+        print("-" * 20)
+        print("Choose an action (1-5): ", end="")
+        raw_input = input()
+        
+        if raw_input == "1":
+            adventurer.attack(enemy)
+            if enemy.alive():
                 enemy.attack(adventurer)
-                loseGold = randint(1, enemy.power)
-                if adventurer.alive():
-                    adventurer.items["Gold"] -= randint(1, enemy.power)
-                    print(f"{adventurer.name} fled to fight another day and lost {loseGold} gold.")
-                break
-
-            elif raw_input == "5":
-                print("Thank you for playing.")
-                play = 0
-                break
             else:
-                print(f"Please make a valid choice.")
+                adventurer.loot(enemy)
 
-        # If enemy dies, another enemy of the same type must be able to respawn.
+        elif raw_input == "2":
+            defenseCheck = adventurer.defend(enemy)
+            if enemy.alive():
+                enemy.attack(adventurer, defenseCheck)
 
-        if enemy.alive() == False:
-            enemy.health = int(enemy.endurance * 10)
+        elif raw_input == "3":
+            adventurer.use(enemy)
+            if enemy.alive():
+                enemy.attack(adventurer)
+            else:
+                adventurer.loot(enemy)
 
-        if adventurer.alive() == False:
-            play = 0
+        elif raw_input == "4":
+            enemy.attack(adventurer)
+            loseGold = randint(1, enemy.power)
+            if adventurer.alive():
+                adventurer.items["Gold"] -= randint(1, enemy.power)
+                print(f"\n{adventurer.name} fled to fight another day and lost {loseGold} gold.")
+            break
+
+        else:
+            print(f"\nPlease select a valid choice.")
+
+    # If enemy dies, another enemy of the same type must be able to respawn.
+
+    if enemy.alive() == False:
+        enemy.health = int(enemy.endurance * 10)
 
 #-------------------------------------------------------------------------------------#

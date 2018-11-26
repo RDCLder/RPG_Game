@@ -2,11 +2,15 @@
 
 #-------------------------------------------------------------------------------------#
 
-# Class Definition
+# Initialize
 
 from random import randint
 from random import choice
 yourName = "Hero"
+
+#-------------------------------------------------------------------------------------#
+
+# Character Class
 
 class Character:
 
@@ -82,12 +86,15 @@ class Character:
             self.mind = int(self.mentality * 10)
             if rpgClass == "zombie":
                 self.special = "undying"
-            elif rpgClass == "":
+            elif rpgClass == "shadow":
                 self.special = "shadow"
             elif rpgClass == "dragon":
                 self.special = "fireproof"
             else:
                 self.special = "normal"
+
+    def __str__(self):
+        return self.name
 
     def attack(self, target, targetDefense=0):
         
@@ -109,19 +116,19 @@ class Character:
 
         # Vampires gain back some of the damage they deal as health.
 
-        if self.rpgClass == "babyVampire" or self.rpgClass == "adultVampire" or self.rpgClass == "elderVampire":
+        if self.rpgClass == "vampire":
             self.health += randint(damage // 4, damage)
 
         # Shadow Elementals are hard to hit.
 
-        if target.rpgClass == "shadow" or target.rpgClass == "greaterShadow" or target.rpgClass == "deathShadow":
+        if target.rpgClass == "shadow":
             if randint(1, 10) // 10 == 1:
                 pass
             else:
                 damage = 0
 
         target.health -= damage
-        print(f"{self.name} does {damage} damage to {target.name}.")
+        print(f"\n{self.name} does {damage} damage to {target.name}.")
         
         # Zombies only die to fire damage
         
@@ -298,5 +305,44 @@ class Character:
             print(f"{self.name} has {self.health} health, {self.energy} energy and {self.power} power.")
         else:
             print(f"{self.name} has {self.health} health and {self.power} power.")
+
+#-------------------------------------------------------------------------------------#
+
+# Generate Enemies
+
+goblin1 = Character("Goblin", "goblin", "common", 1, 1, 2, 1)
+bandit1 = Character("Bandit", "bandit", "common", 2, 2, 3, 2)
+wolf1 = Character("Wolf", "wolf", "common", 2, 1, 4, 1)
+zombie1 = Character("Zombie", "zombie", "uncommon", 1, 1, 0, 10),
+troll1 = Character("Troll", "troll", "rare", 8, 8, 2, 1)
+shadow1 = Character("Shadow Elemental", "shadow", "uncommon", 4, 0.1, 4, 10)
+greaterShadow1 = Character("Greater Shadow Elemental", "shadow", "rare", 8, 2, 5, 15)
+deathShadow1 = Character("Shadow of Death", "shadow", "mythic", 15, 5, 6, 20)
+babyVampire1 = Character("Vampire Fledgling", "vampire", "uncommon", 3, 3, 3, 2)
+adultVampire1 = Character("Adult Vampire", "vampire", "rare", 5, 5, 5, 5)
+elderVampire1 = Character("Elder Vampire", "vampire", "mythic", 10, 20, 8, 10)
+lich = Character("Lich", "lich", "boss", 1, 10, 3, 30)
+basilisk = Character("Basilisk", "basilisk", "boss", 10, 30, 4, 10)
+efreet = Character("Efreet", "djinn", "boss", 20, 20, 10, 20)
+ancientOne = Character("Ancient One", "elderDemon", "boss", 30, 30, 10, 25)
+dragon = Character("High Dragon", "dragon", "boss", 50, 100, 15, 100)
+
+enemies = {
+    "common": (goblin1, bandit1, wolf1),
+    "uncommon": (zombie1, shadow1, babyVampire1),
+    "rare": (troll1, greaterShadow1, adultVampire1),
+    "mythic": (elderVampire1, deathShadow1)
+}
+
+bossEnemies = {
+    "Graveyard": lich,
+    "Deep Forest": basilisk,
+    "Ancient Ruins": efreet,
+    "Steppe of Sheol": ancientOne,
+    "Dragon's Den": dragon
+}
+
+# In the future, enemies will become location dependent.
+# e.g. dragon will only appear in Dragon's Den, zombie will only appear in Graveyard, etc.
 
 #-------------------------------------------------------------------------------------#
