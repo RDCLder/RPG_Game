@@ -1,13 +1,14 @@
-# RPG Game (Unfinished 11/23/18)
+# RPG Game
 
-## Files
+## Main
 
-- Main
-  - rpgPlay
-    - Launch this file to start the game (unfinished as of 11/23/18).
+- rpgPlay
+  - Launch this file to start the game.
+  - Game is mostly playable as of 11/23/18, but more features are coming.
     
-- Modules
-  - rpgCharacter
-    - Stores character definitions
-  - rpgGameplay
-    - Stores gameplay definitions and most other core gameplay code.
+## Modules
+
+- rpgCharacter
+  - Stores character definitions
+- rpgGameplay
+  - Stores gameplay definitions and most other core gameplay code.
