@@ -17,10 +17,10 @@ RPG Game is a terminal-based adventure game that lets players explore a fantasy 
 
 ## Files
 
-- rpgPlay
+- ```rpgPlay```
   - Launch this file to start the game.
   - Game is mostly playable as of 11/23/18, but more features are coming.
-- rpgCharacter
+- ```rpgCharacter```
   - Stores character definitions
-- rpgGameplay
+- ```rpgGameplay```
   - Stores gameplay definitions and most other core gameplay code.
